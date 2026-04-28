@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.3.0"
     application
+    kotlin("plugin.serialization") version "2.3.0"
 }
 
 group = "com.donai"
@@ -15,12 +16,13 @@ dependencies {
     implementation("io.ktor:ktor-server-netty:2.3.7")
     implementation("io.ktor:ktor-server-content-negotiation:2.3.7")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
-
+    implementation("io.insert-koin:koin-ktor:3.5.0")
+    implementation("io.insert-koin:koin-logger-slf4j:3.5.0")
     implementation("ch.qos.logback:logback-classic:1.4.14")
 }
 
 application {
-    mainClass.set("com.donai.ApplicationKt")
+    mainClass.set("com.donai.api.ApplicationKt")
 }
 
 kotlin {
