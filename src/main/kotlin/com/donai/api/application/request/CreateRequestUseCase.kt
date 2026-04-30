@@ -2,6 +2,7 @@ package com.donai.api.application.request
 
 import com.donai.api.domain.request.DonationRequest
 import com.donai.api.domain.request.RequestRepository
+import java.util.UUID
 
 class CreateRequestUseCase(
     private val repository: RequestRepository
@@ -18,7 +19,7 @@ class CreateRequestUseCase(
     ): DonationRequest {
 
         val request = DonationRequest(
-            id = "",
+            id = UUID.randomUUID().toString(),
             requesterId = requesterId,
             bloodGroup = bloodGroup,
             rhFactor = rhFactor,

@@ -11,7 +11,7 @@ import com.donai.api.presentation.routes.requestRoutes
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 import kotlinx.serialization.json.Json
-
+import com.donai.api.infrastructure.db.DatabaseFactory
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 
@@ -22,6 +22,8 @@ fun main() {
 }
 
 fun Application.module() {
+
+    DatabaseFactory.init()
 
     install(Koin) {
         modules(appModule)
