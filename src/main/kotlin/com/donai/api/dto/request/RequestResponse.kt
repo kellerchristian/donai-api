@@ -7,11 +7,11 @@ import kotlinx.serialization.Serializable
 data class RequestResponse(
     val id: String,
     val status: String,
-    val accepted: Int
+    val confirmedDonors: Int
 )
 
 fun DonationRequest.toResponse() = RequestResponse(
     id = id,
     status = status,
-    accepted = accepted
+    confirmedDonors = confirmedDonors
 )

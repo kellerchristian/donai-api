@@ -7,12 +7,13 @@ object DonationRequestsTable : Table("donation_requests") {
     val id = varchar("id", 50)
     val requesterId = varchar("requester_id", 50)
 
-    val bloodGroup = varchar("blood_group", 10)
-    val rhFactor = varchar("rh_factor", 10)
+    val requiredBloodGroup = varchar("required_blood_group", 2)
+    val requiredRhFactor = varchar("required_rh_factor", 10)
 
-    val quantity = integer("quantity")
-    val accepted = integer("accepted").default(0)
+    val quantityNeeded = integer("quantity_needed")
+    val confirmedDonors = integer("confirmed_donors")
 
+    // ⚠️ TEMPORAL (hasta usar PostGIS bien)
     val locationLat = double("location_lat")
     val locationLng = double("location_lng")
 

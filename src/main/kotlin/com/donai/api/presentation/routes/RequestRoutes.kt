@@ -4,11 +4,13 @@ import io.ktor.server.routing.*
 import io.ktor.server.response.*
 import io.ktor.server.request.*
 import com.donai.api.application.request.CreateRequestUseCase
+import com.donai.api.application.request.GetRequestsUseCase
 import com.donai.api.dto.request.*
 import io.ktor.server.application.call
 
 fun Route.requestRoutes(
-    createRequestUseCase: CreateRequestUseCase
+    createRequestUseCase: CreateRequestUseCase,
+    getRequestsUseCase: GetRequestsUseCase
 ) {
 
     route("/requests") {
@@ -28,6 +30,13 @@ fun Route.requestRoutes(
             )
 
             call.respond(result.toResponse())
+        }
+        get {
+            val requests = getRequestsUseCase()
+
+            val response = requests.map { it.toListItemResponse() }
+
+            call.respond(response)
         }
     }
 }

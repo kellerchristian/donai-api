@@ -13,8 +13,8 @@ object DatabaseFactory {
         val config = HikariConfig().apply {
             jdbcUrl = "jdbc:postgresql://localhost:5433/donai"
             driverClassName = "org.postgresql.Driver"
-            username = "postgres"
-            password = "postgres"
+            username = System.getenv("DB_USER") ?: "postgres"
+            password = System.getenv("DB_PASSWORD") ?: "postgres"
             maximumPoolSize = 10
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"

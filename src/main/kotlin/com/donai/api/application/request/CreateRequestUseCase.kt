@@ -19,14 +19,16 @@ class CreateRequestUseCase(
     ): DonationRequest {
 
         val request = DonationRequest(
-            id = UUID.randomUUID().toString(),
+            id = UUID.randomUUID().toString(), // ⚠️ temporal
             requesterId = requesterId,
-            bloodGroup = bloodGroup,
-            rhFactor = rhFactor,
-            quantity = quantity,
+            requiredBloodGroup = bloodGroup,
+            requiredRhFactor = rhFactor,
+            quantityNeeded = quantity,
+            confirmedDonors = 0,
             locationLat = lat,
             locationLng = lng,
-            description = description
+            description = description,
+            status = "ACTIVE"
         )
 
         return repository.create(request)

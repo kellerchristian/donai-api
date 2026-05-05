@@ -9,32 +9,34 @@ import org.jetbrains.exposed.sql.selectAll
 
 class PostgresRequestRepository : RequestRepository {
 
-    override fun create(request: DonationRequest): DonationRequest  = dbQuery{
+    override fun create(request: DonationRequest): DonationRequest = dbQuery {
+
         DonationRequestsTable.insert {
             it[id] = request.id
             it[requesterId] = request.requesterId
-            it[bloodGroup] = request.bloodGroup
-            it[rhFactor] = request.rhFactor
-            it[quantity] = request.quantity
-            it[accepted] = request.accepted
+            it[requiredBloodGroup] = request.requiredBloodGroup
+            it[requiredRhFactor] = request.requiredRhFactor
+            it[quantityNeeded] = request.quantityNeeded
+            it[confirmedDonors] = request.confirmedDonors
             it[locationLat] = request.locationLat
             it[locationLng] = request.locationLng
             it[description] = request.description
             it[status] = request.status
         }
-
         request
     }
 
-    override fun getAll(): List<DonationRequest> {
-        return DonationRequestsTable.selectAll().map {
+    override fun getAll(): List<DonationRequest> = dbQuery {
+
+        DonationRequestsTable.selectAll().map {
+
             DonationRequest(
                 id = it[DonationRequestsTable.id],
                 requesterId = it[DonationRequestsTable.requesterId],
-                bloodGroup = it[DonationRequestsTable.bloodGroup],
-                rhFactor = it[DonationRequestsTable.rhFactor],
-                quantity = it[DonationRequestsTable.quantity],
-                accepted = it[DonationRequestsTable.accepted],
+                requiredBloodGroup = it[DonationRequestsTable.requiredBloodGroup],
+                requiredRhFactor = it[DonationRequestsTable.requiredRhFactor],
+                quantityNeeded = it[DonationRequestsTable.quantityNeeded],
+                confirmedDonors = it[DonationRequestsTable.confirmedDonors],
                 locationLat = it[DonationRequestsTable.locationLat],
                 locationLng = it[DonationRequestsTable.locationLng],
                 description = it[DonationRequestsTable.description],
