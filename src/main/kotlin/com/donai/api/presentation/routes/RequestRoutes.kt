@@ -5,14 +5,16 @@ import io.ktor.server.response.*
 import io.ktor.server.request.*
 import com.donai.api.application.request.CreateRequestUseCase
 import com.donai.api.application.request.GetRequestByIdUseCase
-import com.donai.api.application.request.GetRequestsUseCase
+import com.donai.api.application.request.GetAllRequestsUseCase
+import com.donai.api.application.request.GetFeedRequestsUseCase
 import com.donai.api.dto.request.*
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 
 fun Route.requestRoutes(
     createRequestUseCase: CreateRequestUseCase,
-    getRequestsUseCase: GetRequestsUseCase,
+    getAllRequestsUseCase: GetAllRequestsUseCase,
+    getFeedRequestsUseCase: GetFeedRequestsUseCase,
     getRequestByIdUseCase: GetRequestByIdUseCase
 ) {
 
@@ -36,11 +38,19 @@ fun Route.requestRoutes(
         }
 
         get {
-            val requests = getRequestsUseCase()
+            val mode = call.request.queryParameters["mode"] ?: "feed"
+            val userId = "mock-user-123"
 
-            val response = requests.map { it.toListItemResponse() }
+            val result = when (mode) {
 
-            call.respond(response)
+                "all" -> getAllRequestsUseCase()
+
+                "feed" -> getFeedRequestsUseCase(userId)
+
+                else -> getAllRequestsUseCase()
+            }
+
+            call.respond(result.map { it.toDetailResponse() })
         }
 
         get("/{id}") {
