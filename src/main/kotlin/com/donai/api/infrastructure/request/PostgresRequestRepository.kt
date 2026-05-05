@@ -5,6 +5,7 @@ import com.donai.api.domain.request.RequestRepository
 import com.donai.api.infrastructure.db.tables.DonationRequestsTable
 import com.donai.api.infrastructure.dbQuery
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 
 class PostgresRequestRepository : RequestRepository {
@@ -43,5 +44,26 @@ class PostgresRequestRepository : RequestRepository {
                 status = it[DonationRequestsTable.status]
             )
         }
+    }
+
+    override fun getById(id: String): DonationRequest? = dbQuery {
+
+        DonationRequestsTable
+            .select { DonationRequestsTable.id eq id }
+            .map {
+                DonationRequest(
+                    id = it[DonationRequestsTable.id],
+                    requesterId = it[DonationRequestsTable.requesterId],
+                    requiredBloodGroup = it[DonationRequestsTable.requiredBloodGroup],
+                    requiredRhFactor = it[DonationRequestsTable.requiredRhFactor],
+                    quantityNeeded = it[DonationRequestsTable.quantityNeeded],
+                    confirmedDonors = it[DonationRequestsTable.confirmedDonors],
+                    locationLat = it[DonationRequestsTable.locationLat],
+                    locationLng = it[DonationRequestsTable.locationLng],
+                    description = it[DonationRequestsTable.description],
+                    status = it[DonationRequestsTable.status]
+                )
+            }
+            .singleOrNull()
     }
 }

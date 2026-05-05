@@ -1,6 +1,7 @@
 package com.donai.api
 
 import com.donai.api.application.request.CreateRequestUseCase
+import com.donai.api.application.request.GetRequestByIdUseCase
 import com.donai.api.application.request.GetRequestsUseCase
 import com.donai.api.di.appModule
 import io.ktor.server.application.*
@@ -40,7 +41,8 @@ fun Application.module() {
     routing {
         val createRequestUseCase by inject<CreateRequestUseCase>()
         val getRequestsUseCase by inject<GetRequestsUseCase>()
+        val getRequestByIdUseCase by inject<GetRequestByIdUseCase>()
 
-        requestRoutes(createRequestUseCase, getRequestsUseCase)
+        requestRoutes(createRequestUseCase, getRequestsUseCase, getRequestByIdUseCase)
     }
 }
