@@ -2,6 +2,7 @@ package com.donai.api.application.request
 
 import com.donai.api.domain.request.DonationRequest
 import com.donai.api.domain.request.RequestRepository
+import com.donai.api.domain.request.RequestStatus
 import java.util.UUID
 
 class CreateRequestUseCase(
@@ -28,7 +29,7 @@ class CreateRequestUseCase(
             locationLat = lat,
             locationLng = lng,
             description = description,
-            status = "ACTIVE"
+            status = RequestStatus.ACTIVE
         )
 
         return repository.create(request)

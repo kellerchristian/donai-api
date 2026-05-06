@@ -1,5 +1,6 @@
 package com.donai.api.presentation.routes
 
+import com.donai.api.application.request.CancelRequestUseCase
 import io.ktor.server.routing.*
 import io.ktor.server.response.*
 import io.ktor.server.request.*
@@ -15,7 +16,8 @@ fun Route.requestRoutes(
     createRequestUseCase: CreateRequestUseCase,
     getAllRequestsUseCase: GetAllRequestsUseCase,
     getFeedRequestsUseCase: GetFeedRequestsUseCase,
-    getRequestByIdUseCase: GetRequestByIdUseCase
+    getRequestByIdUseCase: GetRequestByIdUseCase,
+    cancelRequestUseCase: CancelRequestUseCase
 ) {
 
     route("/requests") {
@@ -70,6 +72,23 @@ fun Route.requestRoutes(
             }
 
             call.respond(request.toDetailResponse())
+        }
+
+        patch("/{id}/cancel") {
+
+            val id = call.parameters["id"]
+                ?: return@patch call.respond(HttpStatusCode.BadRequest)
+
+            try {
+                cancelRequestUseCase(id)
+                call.respond(HttpStatusCode.NoContent)
+
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.NotFound, e.message ?: "Not found")
+
+            } catch (e: IllegalStateException) {
+                call.respond(HttpStatusCode.Conflict, e.message ?: "Invalid state")
+            }
         }
     }
 }

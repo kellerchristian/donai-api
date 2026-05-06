@@ -27,5 +27,5 @@ fun DonationRequest.toDetailResponse() = RequestDetailResponse(
     locationLat = locationLat,
     locationLng = locationLng,
     description = description,
-    status = status
+    status = status.name
 )

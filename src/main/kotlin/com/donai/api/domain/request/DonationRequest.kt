@@ -11,5 +11,5 @@ data class DonationRequest(
     val locationLat: Double,
     val locationLng: Double,
     val description: String,
-    val status: String
+    val status: RequestStatus
 )

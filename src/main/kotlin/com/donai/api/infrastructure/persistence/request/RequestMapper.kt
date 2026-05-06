@@ -1,8 +1,11 @@
 package com.donai.api.infrastructure.persistence.request
 
 import com.donai.api.domain.request.DonationRequest
+import com.donai.api.domain.request.RequestStatus
 import com.donai.api.infrastructure.db.tables.DonationRequestsTable
 import org.jetbrains.exposed.sql.ResultRow
+import java.util.Locale
+import java.util.Locale.getDefault
 
 object RequestMapper {
 
@@ -17,7 +20,9 @@ object RequestMapper {
             locationLat = row[DonationRequestsTable.locationLat],
             locationLng = row[DonationRequestsTable.locationLng],
             description = row[DonationRequestsTable.description],
-            status = row[DonationRequestsTable.status]
+            status = RequestStatus.entries
+                .find { it.name == row[DonationRequestsTable.status] }
+                ?: throw IllegalStateException("Unknown status: ${row[DonationRequestsTable.status]}")
         )
     }
 }

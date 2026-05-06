@@ -2,11 +2,13 @@ package com.donai.api.infrastructure.persistence.request
 
 import com.donai.api.domain.request.DonationRequest
 import com.donai.api.domain.request.RequestRepository
+import com.donai.api.domain.request.RequestStatus
 import com.donai.api.infrastructure.db.tables.DonationRequestsTable
 import com.donai.api.infrastructure.dbQuery
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.update
 
 class PostgresRequestRepository : RequestRepository {
 
@@ -22,7 +24,7 @@ class PostgresRequestRepository : RequestRepository {
             it[locationLat] = request.locationLat
             it[locationLng] = request.locationLng
             it[description] = request.description
-            it[status] = request.status
+            it[status] = request.status.name
         }
         request
     }
@@ -43,6 +45,17 @@ class PostgresRequestRepository : RequestRepository {
     override fun getFeedForUser(userId: String): List<DonationRequest> = dbQuery {
         DonationRequestsTable.selectAll().map {
             RequestMapper.fromRow(it)
+        }
+    }
+
+    override fun updateStatus(id: String, status: RequestStatus) = dbQuery {
+        val updatedRows = DonationRequestsTable
+            .update({ DonationRequestsTable.id eq id }) {
+                it[this.status] = status.name
+            }
+
+        if (updatedRows == 0) {
+            throw IllegalArgumentException("Request not found")
         }
     }
 }

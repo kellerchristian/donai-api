@@ -19,5 +19,5 @@ fun DonationRequest.toListItemResponse() = RequestListItemResponse(
     rhFactor = requiredRhFactor,
     quantityNeeded = quantityNeeded,
     confirmedDonors = confirmedDonors,
-    status = status
+    status = status.name
 )

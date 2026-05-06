@@ -12,6 +12,6 @@ data class RequestResponse(
 
 fun DonationRequest.toResponse() = RequestResponse(
     id = id,
-    status = status,
+    status = status.name,
     confirmedDonors = confirmedDonors
 )

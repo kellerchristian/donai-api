@@ -1,5 +1,6 @@
 package com.donai.api.di
 
+import com.donai.api.application.request.CancelRequestUseCase
 import com.donai.api.application.request.CreateRequestUseCase
 import com.donai.api.application.request.GetRequestByIdUseCase
 import com.donai.api.application.request.GetAllRequestsUseCase
@@ -16,4 +17,5 @@ val appModule = module {
     single { GetAllRequestsUseCase(get()) }
     single { GetFeedRequestsUseCase(get()) }
     single { GetRequestByIdUseCase(get()) }
+    single { CancelRequestUseCase(get()) }
 }

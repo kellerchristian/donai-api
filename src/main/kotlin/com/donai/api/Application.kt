@@ -1,5 +1,6 @@
 package com.donai.api
 
+import com.donai.api.application.request.CancelRequestUseCase
 import com.donai.api.application.request.CreateRequestUseCase
 import com.donai.api.application.request.GetRequestByIdUseCase
 import com.donai.api.application.request.GetAllRequestsUseCase
@@ -44,7 +45,8 @@ fun Application.module() {
         val getAllRequestsUseCase by inject<GetAllRequestsUseCase>()
         val getFeedRequestsUseCase by inject<GetFeedRequestsUseCase>()
         val getRequestByIdUseCase by inject<GetRequestByIdUseCase>()
+        val cancelRequestUseCase by inject<CancelRequestUseCase>()
 
-        requestRoutes(createRequestUseCase, getAllRequestsUseCase, getFeedRequestsUseCase, getRequestByIdUseCase)
+        requestRoutes(createRequestUseCase, getAllRequestsUseCase, getFeedRequestsUseCase, getRequestByIdUseCase, cancelRequestUseCase)
     }
 }
