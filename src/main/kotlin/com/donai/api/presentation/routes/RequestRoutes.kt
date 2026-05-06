@@ -1,5 +1,6 @@
 package com.donai.api.presentation.routes
 
+import com.donai.api.application.commitment.CreateCommitmentUseCase
 import com.donai.api.application.request.CancelRequestUseCase
 import io.ktor.server.routing.*
 import io.ktor.server.response.*
@@ -8,6 +9,7 @@ import com.donai.api.application.request.CreateRequestUseCase
 import com.donai.api.application.request.GetRequestByIdUseCase
 import com.donai.api.application.request.GetAllRequestsUseCase
 import com.donai.api.application.request.GetFeedRequestsUseCase
+import com.donai.api.dto.commitment.toResponse
 import com.donai.api.dto.request.*
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
@@ -17,7 +19,8 @@ fun Route.requestRoutes(
     getAllRequestsUseCase: GetAllRequestsUseCase,
     getFeedRequestsUseCase: GetFeedRequestsUseCase,
     getRequestByIdUseCase: GetRequestByIdUseCase,
-    cancelRequestUseCase: CancelRequestUseCase
+    cancelRequestUseCase: CancelRequestUseCase,
+    createCommitmentUseCase: CreateCommitmentUseCase
 ) {
 
     route("/requests") {
@@ -85,6 +88,30 @@ fun Route.requestRoutes(
 
             } catch (e: IllegalArgumentException) {
                 call.respond(HttpStatusCode.NotFound, e.message ?: "Not found")
+
+            } catch (e: IllegalStateException) {
+                call.respond(HttpStatusCode.Conflict, e.message ?: "Invalid state")
+            }
+        }
+
+        post("/{id}/commitments") {
+
+            val requestId = call.parameters["id"]
+                ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing request id")
+
+            val donorId = "mock-user-123"
+
+            try {
+
+                val commitment = createCommitmentUseCase.execute(
+                    requestId = requestId,
+                    donorId = donorId
+                )
+
+                call.respond(HttpStatusCode.Created, commitment.toResponse())
+
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.NotFound, e.message ?: "Request not found")
 
             } catch (e: IllegalStateException) {
                 call.respond(HttpStatusCode.Conflict, e.message ?: "Invalid state")

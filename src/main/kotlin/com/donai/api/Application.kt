@@ -1,11 +1,13 @@
 package com.donai.api
 
+import com.donai.api.application.commitment.CreateCommitmentUseCase
 import com.donai.api.application.request.CancelRequestUseCase
 import com.donai.api.application.request.CreateRequestUseCase
 import com.donai.api.application.request.GetRequestByIdUseCase
 import com.donai.api.application.request.GetAllRequestsUseCase
 import com.donai.api.application.request.GetFeedRequestsUseCase
 import com.donai.api.di.appModule
+import com.donai.api.di.commitmentModule
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -46,7 +48,15 @@ fun Application.module() {
         val getFeedRequestsUseCase by inject<GetFeedRequestsUseCase>()
         val getRequestByIdUseCase by inject<GetRequestByIdUseCase>()
         val cancelRequestUseCase by inject<CancelRequestUseCase>()
+        val createCommitmentUseCase by inject<CreateCommitmentUseCase>()
 
-        requestRoutes(createRequestUseCase, getAllRequestsUseCase, getFeedRequestsUseCase, getRequestByIdUseCase, cancelRequestUseCase)
+        requestRoutes(
+            createRequestUseCase,
+            getAllRequestsUseCase,
+            getFeedRequestsUseCase,
+            getRequestByIdUseCase,
+            cancelRequestUseCase,
+            createCommitmentUseCase
+        )
     }
 }

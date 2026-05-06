@@ -1,5 +1,6 @@
 package com.donai.api.infrastructure.db
 
+import com.donai.api.infrastructure.db.tables.DonationCommitmentsTable
 import com.donai.api.infrastructure.db.tables.DonationRequestsTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -24,7 +25,10 @@ object DatabaseFactory {
         val database = Database.connect(dataSource)
 
         transaction(database) {
-            SchemaUtils.create(DonationRequestsTable)
+            SchemaUtils.create(
+                DonationRequestsTable,
+                DonationCommitmentsTable
+            )
         }
     }
 }

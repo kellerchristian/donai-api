@@ -1,0 +1,20 @@
+package com.donai.api.di
+
+import com.donai.api.application.commitment.CreateCommitmentUseCase
+import org.koin.dsl.module
+import com.donai.api.domain.commitment.CommitmentRepository
+import com.donai.api.infrastructure.persistence.commitment.PostgresCommitmentRepository
+import com.donai.api.infrastructure.persistence.commitment.CommitmentMapper
+
+val commitmentModule = module {
+
+    single { CommitmentMapper() }
+
+    single<CommitmentRepository> {
+        PostgresCommitmentRepository(get())
+    }
+
+    factory {
+        CreateCommitmentUseCase(get(), get())
+    }
+}
