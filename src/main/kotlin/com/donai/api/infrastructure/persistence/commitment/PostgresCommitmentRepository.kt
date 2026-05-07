@@ -73,4 +73,25 @@ class PostgresCommitmentRepository(
         }
         Unit
     }
+
+    override fun updateAptitude(
+        id: String,
+        status: CommitmentStatus,
+        aptitudeResponses: String
+    ) = dbQuery {
+
+        val updatedRows = DonationCommitmentsTable.update({
+            DonationCommitmentsTable.id eq id
+        }) {
+
+            it[this.status] = status.name
+            it[this.aptitudeResponses] = aptitudeResponses
+        }
+
+        if (updatedRows == 0) {
+            throw IllegalArgumentException("Commitment not found")
+        }
+
+        Unit
+    }
 }

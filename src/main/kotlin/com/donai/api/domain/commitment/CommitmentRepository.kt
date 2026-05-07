@@ -20,4 +20,10 @@ interface CommitmentRepository {
         status: CommitmentStatus,
         confirmedAt: Instant?
     )
+
+    fun updateAptitude(
+        id: String,
+        status: CommitmentStatus,
+        aptitudeResponses: String
+    )
 }

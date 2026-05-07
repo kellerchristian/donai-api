@@ -2,6 +2,7 @@ package com.donai.api
 
 import com.donai.api.application.commitment.ConfirmCommitmentUseCase
 import com.donai.api.application.commitment.CreateCommitmentUseCase
+import com.donai.api.application.commitment.SubmitAptitudeUseCase
 import com.donai.api.application.request.CancelRequestUseCase
 import com.donai.api.application.request.CreateRequestUseCase
 import com.donai.api.application.request.GetRequestByIdUseCase
@@ -52,6 +53,7 @@ fun Application.module() {
         val cancelRequestUseCase by inject<CancelRequestUseCase>()
         val createCommitmentUseCase by inject<CreateCommitmentUseCase>()
         val confirmCommitmentUseCase by inject<ConfirmCommitmentUseCase>()
+        val submitAptitudeUseCase by inject<SubmitAptitudeUseCase>()
 
         requestRoutes(
             createRequestUseCase,
@@ -62,7 +64,8 @@ fun Application.module() {
             createCommitmentUseCase
         )
         commitmentRoutes(
-            confirmCommitmentUseCase
+            confirmCommitmentUseCase,
+            submitAptitudeUseCase
         )
     }
 }
