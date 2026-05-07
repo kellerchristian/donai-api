@@ -1,5 +1,6 @@
 package com.donai.api.di
 
+import com.donai.api.application.commitment.ConfirmCommitmentUseCase
 import com.donai.api.application.commitment.CreateCommitmentUseCase
 import org.koin.dsl.module
 import com.donai.api.domain.commitment.CommitmentRepository
@@ -16,5 +17,8 @@ val commitmentModule = module {
 
     factory {
         CreateCommitmentUseCase(get(), get())
+    }
+    factory {
+        ConfirmCommitmentUseCase(get(), get())
     }
 }

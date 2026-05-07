@@ -1,5 +1,6 @@
 package com.donai.api
 
+import com.donai.api.application.commitment.ConfirmCommitmentUseCase
 import com.donai.api.application.commitment.CreateCommitmentUseCase
 import com.donai.api.application.request.CancelRequestUseCase
 import com.donai.api.application.request.CreateRequestUseCase
@@ -18,6 +19,7 @@ import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 import kotlinx.serialization.json.Json
 import com.donai.api.infrastructure.db.DatabaseFactory
+import com.donai.api.presentation.routes.commitmentRoutes
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 
@@ -49,6 +51,7 @@ fun Application.module() {
         val getRequestByIdUseCase by inject<GetRequestByIdUseCase>()
         val cancelRequestUseCase by inject<CancelRequestUseCase>()
         val createCommitmentUseCase by inject<CreateCommitmentUseCase>()
+        val confirmCommitmentUseCase by inject<ConfirmCommitmentUseCase>()
 
         requestRoutes(
             createRequestUseCase,
@@ -57,6 +60,9 @@ fun Application.module() {
             getRequestByIdUseCase,
             cancelRequestUseCase,
             createCommitmentUseCase
+        )
+        commitmentRoutes(
+            confirmCommitmentUseCase
         )
     }
 }

@@ -1,10 +1,15 @@
 package com.donai.api.infrastructure.persistence.request
 
+import com.donai.api.domain.commitment.CommitmentStatus
 import com.donai.api.domain.request.DonationRequest
 import com.donai.api.domain.request.RequestRepository
 import com.donai.api.domain.request.RequestStatus
+import com.donai.api.infrastructure.db.tables.DonationCommitmentsTable
 import com.donai.api.infrastructure.db.tables.DonationRequestsTable
 import com.donai.api.infrastructure.dbQuery
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.minus
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.plus
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
@@ -52,6 +57,21 @@ class PostgresRequestRepository : RequestRepository {
         val updatedRows = DonationRequestsTable
             .update({ DonationRequestsTable.id eq id }) {
                 it[this.status] = status.name
+            }
+
+        if (updatedRows == 0) {
+            throw IllegalArgumentException("Request not found")
+        }
+    }
+
+    override fun updateConfirmedDonors(
+        requestId: String,
+        confirmedDonors: Int
+    ) = dbQuery {
+
+        val updatedRows = DonationRequestsTable
+            .update({ DonationRequestsTable.id eq requestId }) {
+                it[this.confirmedDonors] = confirmedDonors
             }
 
         if (updatedRows == 0) {

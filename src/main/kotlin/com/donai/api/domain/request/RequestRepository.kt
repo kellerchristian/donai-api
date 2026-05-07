@@ -6,4 +6,8 @@ interface RequestRepository {
     fun getById(id: String): DonationRequest?
     fun getFeedForUser(userId: String): List<DonationRequest>
     fun updateStatus(id: String, status: RequestStatus)
+    fun updateConfirmedDonors(
+        requestId: String,
+        confirmedDonors: Int
+    )
 }

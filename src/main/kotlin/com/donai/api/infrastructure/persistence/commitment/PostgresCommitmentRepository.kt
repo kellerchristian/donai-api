@@ -4,9 +4,11 @@ import com.donai.api.domain.commitment.CommitmentRepository
 import com.donai.api.domain.commitment.DonationCommitment
 import com.donai.api.domain.commitment.CommitmentStatus
 import com.donai.api.infrastructure.db.tables.DonationCommitmentsTable
+import com.donai.api.infrastructure.db.tables.DonationRequestsTable
 import com.donai.api.infrastructure.dbQuery
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.plus
 import java.time.Instant
 import java.time.LocalDateTime
 
@@ -29,6 +31,13 @@ class PostgresCommitmentRepository(
         commitment
     }
 
+    override fun findById(id: String): DonationCommitment? = dbQuery {
+        DonationCommitmentsTable
+            .select { DonationCommitmentsTable.id eq id }
+            .map { mapper.fromRow(it) }
+            .singleOrNull()
+    }
+
     override fun findByRequestIdAndDonorId(
         requestId: String,
         donorId: String
@@ -44,13 +53,24 @@ class PostgresCommitmentRepository(
     }
 
     override fun countConfirmedByRequestId(requestId: String): Int = dbQuery {
-
         DonationCommitmentsTable
             .select {
                 (DonationCommitmentsTable.requestId eq requestId) and
                         (DonationCommitmentsTable.status eq CommitmentStatus.CONFIRMED.name)
             }
-            .count()
-            .toInt()
+            .count().toInt()
+    }
+
+    override fun updateStatusAndConfirm(
+        id: String,
+        status: CommitmentStatus,
+        confirmedAt: Instant?
+    ) = dbQuery {
+
+        DonationCommitmentsTable.update({ DonationCommitmentsTable.id eq id }) {
+            it[this.status] = status.name
+            it[this.confirmedAt] = confirmedAt
+        }
+        Unit
     }
 }
