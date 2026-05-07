@@ -1,5 +1,6 @@
 package com.donai.api
 
+import com.donai.api.application.commitment.CancelCommitmentUseCase
 import com.donai.api.application.commitment.ConfirmCommitmentUseCase
 import com.donai.api.application.commitment.CreateCommitmentUseCase
 import com.donai.api.application.commitment.SubmitAptitudeUseCase
@@ -9,7 +10,6 @@ import com.donai.api.application.request.GetRequestByIdUseCase
 import com.donai.api.application.request.GetAllRequestsUseCase
 import com.donai.api.application.request.GetFeedRequestsUseCase
 import com.donai.api.di.appModule
-import com.donai.api.di.commitmentModule
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -54,6 +54,7 @@ fun Application.module() {
         val createCommitmentUseCase by inject<CreateCommitmentUseCase>()
         val confirmCommitmentUseCase by inject<ConfirmCommitmentUseCase>()
         val submitAptitudeUseCase by inject<SubmitAptitudeUseCase>()
+        val cancelCommitmentUseCase by inject<CancelCommitmentUseCase>()
 
         requestRoutes(
             createRequestUseCase,
@@ -65,7 +66,8 @@ fun Application.module() {
         )
         commitmentRoutes(
             confirmCommitmentUseCase,
-            submitAptitudeUseCase
+            submitAptitudeUseCase,
+            cancelCommitmentUseCase
         )
     }
 }

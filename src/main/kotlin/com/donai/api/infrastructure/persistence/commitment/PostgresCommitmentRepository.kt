@@ -61,15 +61,18 @@ class PostgresCommitmentRepository(
             .count().toInt()
     }
 
-    override fun updateStatusAndConfirm(
+    override fun updateStatus(
         id: String,
         status: CommitmentStatus,
         confirmedAt: Instant?
     ) = dbQuery {
 
+        val now = Instant.now()
+
         DonationCommitmentsTable.update({ DonationCommitmentsTable.id eq id }) {
             it[this.status] = status.name
             it[this.confirmedAt] = confirmedAt
+            it[this.updatedAt] = now
         }
         Unit
     }
@@ -80,12 +83,15 @@ class PostgresCommitmentRepository(
         aptitudeResponses: String
     ) = dbQuery {
 
+        val now = Instant.now()
+
         val updatedRows = DonationCommitmentsTable.update({
             DonationCommitmentsTable.id eq id
         }) {
 
             it[this.status] = status.name
             it[this.aptitudeResponses] = aptitudeResponses
+            it[this.updatedAt] = now
         }
 
         if (updatedRows == 0) {

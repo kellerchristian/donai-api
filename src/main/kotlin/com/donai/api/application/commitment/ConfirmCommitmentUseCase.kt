@@ -29,7 +29,7 @@ class ConfirmCommitmentUseCase(
         val now = Instant.now()
 
         // 🔥 3. Confirmar commitment
-        commitmentRepository.updateStatusAndConfirm(
+        commitmentRepository.updateStatus(
             id = commitment.id,
             status = CommitmentStatus.CONFIRMED,
             confirmedAt = now

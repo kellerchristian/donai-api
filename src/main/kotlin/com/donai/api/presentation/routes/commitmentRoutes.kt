@@ -1,5 +1,6 @@
 package com.donai.api.presentation.routes
 
+import com.donai.api.application.commitment.CancelCommitmentUseCase
 import com.donai.api.application.commitment.ConfirmCommitmentUseCase
 import com.donai.api.application.commitment.SubmitAptitudeUseCase
 import com.donai.api.dto.commitment.AptitudeResultResponse
@@ -14,7 +15,8 @@ import io.ktor.server.routing.route
 
 fun Route.commitmentRoutes(
     confirmCommitmentUseCase: ConfirmCommitmentUseCase,
-    submitAptitudeUseCase: SubmitAptitudeUseCase
+    submitAptitudeUseCase: SubmitAptitudeUseCase,
+    cancelCommitmentUseCase: CancelCommitmentUseCase
 ) {
 
     route("/commitments") {
@@ -56,6 +58,33 @@ fun Route.commitmentRoutes(
                         status = result.name
                     )
                 )
+
+            } catch (e: IllegalArgumentException) {
+
+                call.respond(
+                    HttpStatusCode.NotFound,
+                    e.message ?: "Not found"
+                )
+
+            } catch (e: IllegalStateException) {
+
+                call.respond(
+                    HttpStatusCode.Conflict,
+                    e.message ?: "Invalid state"
+                )
+            }
+        }
+
+        patch("/{id}/cancel") {
+
+            val id = call.parameters["id"]
+                ?: return@patch call.respond(HttpStatusCode.BadRequest)
+
+            try {
+
+                cancelCommitmentUseCase.execute(id)
+
+                call.respond(HttpStatusCode.NoContent)
 
             } catch (e: IllegalArgumentException) {
 

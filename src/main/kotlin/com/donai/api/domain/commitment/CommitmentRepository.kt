@@ -15,10 +15,10 @@ interface CommitmentRepository {
 
     fun countConfirmedByRequestId(requestId: String): Int
 
-    fun updateStatusAndConfirm(
+    fun updateStatus(
         id: String,
         status: CommitmentStatus,
-        confirmedAt: Instant?
+        confirmedAt: Instant? = null
     )
 
     fun updateAptitude(

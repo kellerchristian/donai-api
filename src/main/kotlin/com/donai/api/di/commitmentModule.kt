@@ -1,5 +1,6 @@
 package com.donai.api.di
 
+import com.donai.api.application.commitment.CancelCommitmentUseCase
 import com.donai.api.application.commitment.ConfirmCommitmentUseCase
 import com.donai.api.application.commitment.CreateCommitmentUseCase
 import com.donai.api.application.commitment.SubmitAptitudeUseCase
@@ -24,5 +25,8 @@ val commitmentModule = module {
     }
     factory {
         SubmitAptitudeUseCase(get())
+    }
+    factory {
+        CancelCommitmentUseCase(get())
     }
 }
