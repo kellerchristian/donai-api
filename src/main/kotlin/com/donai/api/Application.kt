@@ -4,6 +4,7 @@ import com.donai.api.application.commitment.CancelCommitmentUseCase
 import com.donai.api.application.commitment.ConfirmCommitmentUseCase
 import com.donai.api.application.commitment.CreateCommitmentUseCase
 import com.donai.api.application.commitment.SubmitAptitudeUseCase
+import com.donai.api.application.matching.FindMatchingDonorsUseCase
 import com.donai.api.application.request.CancelRequestUseCase
 import com.donai.api.application.request.CreateRequestUseCase
 import com.donai.api.application.request.GetRequestByIdUseCase
@@ -21,8 +22,8 @@ import org.koin.ktor.ext.inject
 import kotlinx.serialization.json.Json
 import com.donai.api.infrastructure.db.DatabaseFactory
 import com.donai.api.presentation.routes.commitmentRoutes
+import com.donai.api.presentation.routes.matchingRoutes
 import io.ktor.server.engine.*
-import io.ktor.server.netty.*
 
 fun main() {
     embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
@@ -55,6 +56,7 @@ fun Application.module() {
         val confirmCommitmentUseCase by inject<ConfirmCommitmentUseCase>()
         val submitAptitudeUseCase by inject<SubmitAptitudeUseCase>()
         val cancelCommitmentUseCase by inject<CancelCommitmentUseCase>()
+        val findMatchingDonorsUseCase by inject<FindMatchingDonorsUseCase>()
 
         requestRoutes(
             createRequestUseCase,
@@ -68,6 +70,9 @@ fun Application.module() {
             confirmCommitmentUseCase,
             submitAptitudeUseCase,
             cancelCommitmentUseCase
+        )
+        matchingRoutes(
+            findMatchingDonorsUseCase
         )
     }
 }
