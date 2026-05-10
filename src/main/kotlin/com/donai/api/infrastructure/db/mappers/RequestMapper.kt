@@ -1,11 +1,9 @@
-package com.donai.api.infrastructure.persistence.request
+package com.donai.api.infrastructure.db.mappers
 
 import com.donai.api.domain.request.DonationRequest
 import com.donai.api.domain.request.RequestStatus
 import com.donai.api.infrastructure.db.tables.DonationRequestsTable
 import org.jetbrains.exposed.sql.ResultRow
-import java.util.Locale
-import java.util.Locale.getDefault
 
 object RequestMapper {
 

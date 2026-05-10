@@ -1,4 +1,4 @@
-package com.donai.api.dto.request
+package com.donai.api.presentation.dto.request
 
 import kotlinx.serialization.Serializable
 

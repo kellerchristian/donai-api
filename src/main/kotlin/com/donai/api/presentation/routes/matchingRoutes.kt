@@ -1,7 +1,7 @@
 package com.donai.api.presentation.routes
 
 import com.donai.api.application.matching.FindMatchingDonorsUseCase
-import com.donai.api.dto.matching.toResponse
+import com.donai.api.presentation.dto.matching.toResponse
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*

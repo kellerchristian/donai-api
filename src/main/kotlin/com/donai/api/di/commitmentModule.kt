@@ -6,8 +6,8 @@ import com.donai.api.application.commitment.CreateCommitmentUseCase
 import com.donai.api.application.commitment.SubmitAptitudeUseCase
 import org.koin.dsl.module
 import com.donai.api.domain.commitment.CommitmentRepository
-import com.donai.api.infrastructure.persistence.commitment.PostgresCommitmentRepository
-import com.donai.api.infrastructure.persistence.commitment.CommitmentMapper
+import com.donai.api.infrastructure.db.repositories.commitment.PostgresCommitmentRepository
+import com.donai.api.infrastructure.db.mappers.CommitmentMapper
 
 val commitmentModule = module {
 

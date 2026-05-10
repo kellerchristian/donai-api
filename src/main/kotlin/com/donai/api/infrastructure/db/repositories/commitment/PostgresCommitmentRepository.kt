@@ -1,16 +1,13 @@
-package com.donai.api.infrastructure.persistence.commitment
+package com.donai.api.infrastructure.db.repositories.commitment
 
 import com.donai.api.domain.commitment.CommitmentRepository
 import com.donai.api.domain.commitment.DonationCommitment
 import com.donai.api.domain.commitment.CommitmentStatus
+import com.donai.api.infrastructure.db.mappers.CommitmentMapper
 import com.donai.api.infrastructure.db.tables.DonationCommitmentsTable
-import com.donai.api.infrastructure.db.tables.DonationRequestsTable
 import com.donai.api.infrastructure.dbQuery
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.plus
 import java.time.Instant
-import java.time.LocalDateTime
 
 class PostgresCommitmentRepository(
     private val mapper: CommitmentMapper

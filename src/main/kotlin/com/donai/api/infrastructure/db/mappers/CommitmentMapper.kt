@@ -1,10 +1,9 @@
-package com.donai.api.infrastructure.persistence.commitment
+package com.donai.api.infrastructure.db.mappers
 
 import com.donai.api.domain.commitment.CommitmentStatus
 import com.donai.api.domain.commitment.DonationCommitment
 import com.donai.api.infrastructure.db.tables.DonationCommitmentsTable
 import org.jetbrains.exposed.sql.ResultRow
-import java.time.ZoneOffset
 
 class CommitmentMapper {
 

@@ -1,4 +1,4 @@
-package com.donai.api.dto.matching
+package com.donai.api.presentation.dto.matching
 
 import com.donai.api.domain.matching.MatchingDonor
 import kotlinx.serialization.Serializable

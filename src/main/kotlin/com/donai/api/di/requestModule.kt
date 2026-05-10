@@ -6,7 +6,7 @@ import com.donai.api.application.request.GetRequestByIdUseCase
 import com.donai.api.application.request.GetAllRequestsUseCase
 import com.donai.api.application.request.GetFeedRequestsUseCase
 import com.donai.api.domain.request.RequestRepository
-import com.donai.api.infrastructure.persistence.request.PostgresRequestRepository
+import com.donai.api.infrastructure.db.repositories.request.PostgresRequestRepository
 import org.koin.dsl.module
 
 val requestModule = module {

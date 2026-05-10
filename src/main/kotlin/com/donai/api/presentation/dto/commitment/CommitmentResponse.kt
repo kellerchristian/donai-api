@@ -1,4 +1,4 @@
-package com.donai.api.dto.commitment
+package com.donai.api.presentation.dto.commitment
 
 import com.donai.api.domain.commitment.CommitmentStatus
 import com.donai.api.domain.commitment.DonationCommitment

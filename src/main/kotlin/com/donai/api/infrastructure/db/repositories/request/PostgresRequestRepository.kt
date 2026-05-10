@@ -1,15 +1,11 @@
-package com.donai.api.infrastructure.persistence.request
+package com.donai.api.infrastructure.db.repositories.request
 
-import com.donai.api.domain.commitment.CommitmentStatus
 import com.donai.api.domain.request.DonationRequest
 import com.donai.api.domain.request.RequestRepository
 import com.donai.api.domain.request.RequestStatus
-import com.donai.api.infrastructure.db.tables.DonationCommitmentsTable
+import com.donai.api.infrastructure.db.mappers.RequestMapper
 import com.donai.api.infrastructure.db.tables.DonationRequestsTable
 import com.donai.api.infrastructure.dbQuery
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.minus
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.plus
-import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
