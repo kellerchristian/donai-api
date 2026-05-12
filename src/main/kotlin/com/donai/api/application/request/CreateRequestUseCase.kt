@@ -3,6 +3,8 @@ package com.donai.api.application.request
 import com.donai.api.domain.request.DonationRequest
 import com.donai.api.domain.request.RequestRepository
 import com.donai.api.domain.request.RequestStatus
+import com.donai.api.domain.shared.BloodGroup
+import com.donai.api.domain.shared.RhFactor
 import java.util.UUID
 
 class CreateRequestUseCase(
@@ -20,14 +22,18 @@ class CreateRequestUseCase(
     ): DonationRequest {
 
         val request = DonationRequest(
-            id = UUID.randomUUID().toString(), // ⚠️ temporal
+            id = UUID.randomUUID().toString(),
             requesterId = requesterId,
-            requiredBloodGroup = bloodGroup,
-            requiredRhFactor = rhFactor,
+
+            requiredBloodGroup = BloodGroup.valueOf(bloodGroup),
+            requiredRhFactor = RhFactor.valueOf(rhFactor),
+
             quantityNeeded = quantity,
             confirmedDonors = 0,
+
             locationLat = lat,
             locationLng = lng,
+
             description = description,
             status = RequestStatus.ACTIVE
         )

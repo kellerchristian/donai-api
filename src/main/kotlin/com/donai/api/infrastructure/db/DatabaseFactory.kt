@@ -2,6 +2,7 @@ package com.donai.api.infrastructure.db
 
 import com.donai.api.infrastructure.db.tables.DonationCommitmentsTable
 import com.donai.api.infrastructure.db.tables.DonationRequestsTable
+import com.donai.api.infrastructure.db.tables.UsersTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
@@ -26,6 +27,7 @@ object DatabaseFactory {
 
         transaction(database) {
             SchemaUtils.create(
+                UsersTable,
                 DonationRequestsTable,
                 DonationCommitmentsTable
             )

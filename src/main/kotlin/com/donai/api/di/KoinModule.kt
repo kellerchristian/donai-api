@@ -6,6 +6,7 @@ val appModule = module {
     includes(
         requestModule,
         commitmentModule,
-        matchingModule
+        matchingModule,
+        userModule
     )
 }

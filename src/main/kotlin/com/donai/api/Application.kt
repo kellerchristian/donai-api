@@ -10,6 +10,9 @@ import com.donai.api.application.request.CreateRequestUseCase
 import com.donai.api.application.request.GetRequestByIdUseCase
 import com.donai.api.application.request.GetAllRequestsUseCase
 import com.donai.api.application.request.GetFeedRequestsUseCase
+import com.donai.api.application.user.CreateUserUseCase
+import com.donai.api.application.user.GetUserProfileUseCase
+import com.donai.api.application.user.UpdateDonationAvailabilityUseCase
 import com.donai.api.di.appModule
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
@@ -23,7 +26,10 @@ import kotlinx.serialization.json.Json
 import com.donai.api.infrastructure.db.DatabaseFactory
 import com.donai.api.presentation.routes.commitmentRoutes
 import com.donai.api.presentation.routes.matchingRoutes
+import com.donai.api.presentation.routes.userRoutes
 import io.ktor.server.engine.*
+import kotlinx.serialization.modules.SerializersModule
+import java.time.Instant
 
 fun main() {
     embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
@@ -43,6 +49,10 @@ fun Application.module() {
         json(Json {
             prettyPrint = true
             isLenient = true
+            ignoreUnknownKeys = true
+            serializersModule = SerializersModule {
+                contextual(Instant::class, InstantSerializer)
+            }
         })
     }
 
@@ -57,6 +67,10 @@ fun Application.module() {
         val submitAptitudeUseCase by inject<SubmitAptitudeUseCase>()
         val cancelCommitmentUseCase by inject<CancelCommitmentUseCase>()
         val findMatchingDonorsUseCase by inject<FindMatchingDonorsUseCase>()
+        val createUserUseCase by inject<CreateUserUseCase>()
+        val getUserProfileUseCase by inject<GetUserProfileUseCase>()
+        val updateDonationAvailabilityUseCase by inject< UpdateDonationAvailabilityUseCase>()
+
 
         requestRoutes(
             createRequestUseCase,
@@ -73,6 +87,11 @@ fun Application.module() {
         )
         matchingRoutes(
             findMatchingDonorsUseCase
+        )
+        userRoutes(
+            createUserUseCase,
+            getUserProfileUseCase,
+            updateDonationAvailabilityUseCase
         )
     }
 }

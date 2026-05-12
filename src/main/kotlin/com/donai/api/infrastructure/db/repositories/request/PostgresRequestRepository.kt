@@ -18,8 +18,8 @@ class PostgresRequestRepository : RequestRepository {
         DonationRequestsTable.insert {
             it[id] = request.id
             it[requesterId] = request.requesterId
-            it[requiredBloodGroup] = request.requiredBloodGroup
-            it[requiredRhFactor] = request.requiredRhFactor
+            it[requiredBloodGroup] = request.requiredBloodGroup.name
+            it[requiredRhFactor] = request.requiredRhFactor.name
             it[quantityNeeded] = request.quantityNeeded
             it[confirmedDonors] = request.confirmedDonors
             it[locationLat] = request.locationLat

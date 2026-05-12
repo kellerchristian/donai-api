@@ -6,18 +6,24 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RequestListItemResponse(
     val id: String,
+
     val bloodGroup: String,
     val rhFactor: String,
+
     val quantityNeeded: Int,
     val confirmedDonors: Int,
+
     val status: String
 )
 
 fun DonationRequest.toListItemResponse() = RequestListItemResponse(
     id = id,
-    bloodGroup = requiredBloodGroup,
-    rhFactor = requiredRhFactor,
+
+    bloodGroup = requiredBloodGroup.name,
+    rhFactor = requiredRhFactor.name,
+
     quantityNeeded = quantityNeeded,
     confirmedDonors = confirmedDonors,
+
     status = status.name
 )

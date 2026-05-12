@@ -2,6 +2,8 @@ package com.donai.api.infrastructure.db.mappers
 
 import com.donai.api.domain.request.DonationRequest
 import com.donai.api.domain.request.RequestStatus
+import com.donai.api.domain.shared.BloodGroup
+import com.donai.api.domain.shared.RhFactor
 import com.donai.api.infrastructure.db.tables.DonationRequestsTable
 import org.jetbrains.exposed.sql.ResultRow
 
@@ -11,8 +13,8 @@ object RequestMapper {
         return DonationRequest(
             id = row[DonationRequestsTable.id],
             requesterId = row[DonationRequestsTable.requesterId],
-            requiredBloodGroup = row[DonationRequestsTable.requiredBloodGroup],
-            requiredRhFactor = row[DonationRequestsTable.requiredRhFactor],
+            requiredBloodGroup = BloodGroup.valueOf(row[DonationRequestsTable.requiredBloodGroup]),
+            requiredRhFactor = RhFactor.valueOf(row[DonationRequestsTable.requiredRhFactor]),
             quantityNeeded = row[DonationRequestsTable.quantityNeeded],
             confirmedDonors = row[DonationRequestsTable.confirmedDonors],
             locationLat = row[DonationRequestsTable.locationLat],
