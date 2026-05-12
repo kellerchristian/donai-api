@@ -1,4 +1,4 @@
-package com.donai.api.infrastructure
+package com.donai.api.infrastructure.db
 
 import org.jetbrains.exposed.sql.transactions.transaction
 

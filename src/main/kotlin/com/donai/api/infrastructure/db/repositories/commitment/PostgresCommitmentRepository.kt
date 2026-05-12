@@ -5,7 +5,7 @@ import com.donai.api.domain.commitment.DonationCommitment
 import com.donai.api.domain.commitment.CommitmentStatus
 import com.donai.api.infrastructure.db.mappers.CommitmentMapper
 import com.donai.api.infrastructure.db.tables.DonationCommitmentsTable
-import com.donai.api.infrastructure.dbQuery
+import com.donai.api.infrastructure.db.dbQuery
 import org.jetbrains.exposed.sql.*
 import java.time.Instant
 

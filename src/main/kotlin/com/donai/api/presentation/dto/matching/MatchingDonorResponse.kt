@@ -6,13 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MatchingDonorResponse(
     val donorId: String,
-    val distanceMeters: Double,
-    val score: Double
+    val distanceMeters: Double
 )
 
 fun MatchingDonor.toResponse() =
     MatchingDonorResponse(
         donorId = donorId,
-        distanceMeters = distanceMeters,
-        score = score
+        distanceMeters = distanceMeters
     )

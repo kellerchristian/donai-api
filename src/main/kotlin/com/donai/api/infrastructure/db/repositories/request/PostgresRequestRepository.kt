@@ -5,7 +5,7 @@ import com.donai.api.domain.request.RequestRepository
 import com.donai.api.domain.request.RequestStatus
 import com.donai.api.infrastructure.db.mappers.RequestMapper
 import com.donai.api.infrastructure.db.tables.DonationRequestsTable
-import com.donai.api.infrastructure.dbQuery
+import com.donai.api.infrastructure.db.dbQuery
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll

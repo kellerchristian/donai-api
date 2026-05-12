@@ -1,13 +1,14 @@
 package com.donai.api.application.matching
 
-import com.donai.api.domain.matching.DonorMatcherRepository
-import com.donai.api.domain.matching.MatchingCriteria
+import com.donai.api.domain.matching.DonorMatchingEngine
+import com.donai.api.domain.matching.DonorRepository
 import com.donai.api.domain.matching.MatchingDonor
 import com.donai.api.domain.request.RequestRepository
 
 class FindMatchingDonorsUseCase(
     private val requestRepository: RequestRepository,
-    private val donorMatcherRepository: DonorMatcherRepository
+    private val donorRepository: DonorRepository,
+    private val donorMatchingEngine: DonorMatchingEngine
 ) {
 
     companion object {
@@ -26,13 +27,14 @@ class FindMatchingDonorsUseCase(
             ?.takeIf { it > 0 }
             ?: DEFAULT_RADIUS_METERS
 
-        val criteria = MatchingCriteria(
-            bloodType = request.bloodType,
+        val candidates = donorRepository.findCandidatesNear(
             location = request.location,
             radiusMeters = effectiveRadius
         )
 
-        return donorMatcherRepository.findMatchingDonors(criteria)
-            .sortedBy { it.distanceMeters }
+        return donorMatchingEngine.match(
+            request = request,
+            candidates = candidates
+        )
     }
 }

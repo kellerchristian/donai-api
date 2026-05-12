@@ -4,7 +4,7 @@ import com.donai.api.domain.user.User
 import com.donai.api.domain.user.UserRepository
 import com.donai.api.infrastructure.db.mappers.toUser
 import com.donai.api.infrastructure.db.tables.UsersTable
-import com.donai.api.infrastructure.dbQuery
+import com.donai.api.infrastructure.db.dbQuery
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.or
