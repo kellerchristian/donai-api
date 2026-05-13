@@ -4,8 +4,10 @@ import com.donai.api.application.commitment.CancelCommitmentUseCase
 import com.donai.api.application.commitment.ConfirmCommitmentUseCase
 import com.donai.api.application.commitment.CreateCommitmentUseCase
 import com.donai.api.application.commitment.SubmitAptitudeUseCase
+import com.donai.api.application.flow.HandleRequestCreatedFlow
 import com.donai.api.application.matching.FindMatchingDonorsUseCase
 import com.donai.api.application.request.CancelRequestUseCase
+import com.donai.api.application.request.CreateRequestService
 import com.donai.api.application.request.CreateRequestUseCase
 import com.donai.api.application.request.GetRequestByIdUseCase
 import com.donai.api.application.request.GetAllRequestsUseCase
@@ -57,7 +59,6 @@ fun Application.module() {
     }
 
     routing {
-        val createRequestUseCase by inject<CreateRequestUseCase>()
         val getAllRequestsUseCase by inject<GetAllRequestsUseCase>()
         val getFeedRequestsUseCase by inject<GetFeedRequestsUseCase>()
         val getRequestByIdUseCase by inject<GetRequestByIdUseCase>()
@@ -70,15 +71,15 @@ fun Application.module() {
         val createUserUseCase by inject<CreateUserUseCase>()
         val getUserProfileUseCase by inject<GetUserProfileUseCase>()
         val updateDonationAvailabilityUseCase by inject< UpdateDonationAvailabilityUseCase>()
-
+        val createRequestService by inject<CreateRequestService>()
 
         requestRoutes(
-            createRequestUseCase,
             getAllRequestsUseCase,
             getFeedRequestsUseCase,
             getRequestByIdUseCase,
             cancelRequestUseCase,
-            createCommitmentUseCase
+            createCommitmentUseCase,
+            createRequestService
         )
         commitmentRoutes(
             confirmCommitmentUseCase,

@@ -1,11 +1,12 @@
 package com.donai.api.presentation.routes
 
 import com.donai.api.application.commitment.CreateCommitmentUseCase
+import com.donai.api.application.flow.HandleRequestCreatedFlow
 import com.donai.api.application.request.CancelRequestUseCase
+import com.donai.api.application.request.CreateRequestService
 import io.ktor.server.routing.*
 import io.ktor.server.response.*
 import io.ktor.server.request.*
-import com.donai.api.application.request.CreateRequestUseCase
 import com.donai.api.application.request.GetRequestByIdUseCase
 import com.donai.api.application.request.GetAllRequestsUseCase
 import com.donai.api.application.request.GetFeedRequestsUseCase
@@ -17,12 +18,12 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 
 fun Route.requestRoutes(
-    createRequestUseCase: CreateRequestUseCase,
     getAllRequestsUseCase: GetAllRequestsUseCase,
     getFeedRequestsUseCase: GetFeedRequestsUseCase,
     getRequestByIdUseCase: GetRequestByIdUseCase,
     cancelRequestUseCase: CancelRequestUseCase,
-    createCommitmentUseCase: CreateCommitmentUseCase
+    createCommitmentUseCase: CreateCommitmentUseCase,
+    createRequestService: CreateRequestService
 ) {
 
     route("/requests") {
@@ -31,7 +32,7 @@ fun Route.requestRoutes(
 
             val userId = "mock-user-123"
 
-            val result = createRequestUseCase(
+            val result = createRequestService(
                 requesterId = userId,
                 bloodGroup = body.bloodGroup,
                 rhFactor = body.rhFactor,

@@ -12,7 +12,7 @@ class FindMatchingDonorsUseCase(
 ) {
 
     companion object {
-        private const val DEFAULT_RADIUS_METERS = 50_000.0
+        private const val DEFAULT_RADIUS_METERS = 50000.0
     }
 
     operator fun invoke(

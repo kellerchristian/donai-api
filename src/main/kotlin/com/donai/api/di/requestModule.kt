@@ -1,6 +1,7 @@
 package com.donai.api.di
 
 import com.donai.api.application.request.CancelRequestUseCase
+import com.donai.api.application.request.CreateRequestService
 import com.donai.api.application.request.CreateRequestUseCase
 import com.donai.api.application.request.GetRequestByIdUseCase
 import com.donai.api.application.request.GetAllRequestsUseCase
@@ -18,4 +19,11 @@ val requestModule = module {
     factory { GetFeedRequestsUseCase(get()) }
     factory { GetRequestByIdUseCase(get()) }
     factory { CancelRequestUseCase(get()) }
+
+    single {
+        CreateRequestService(
+            createRequestUseCase = get(),
+            handleRequestCreatedFlow = get()
+        )
+    }
 }
