@@ -4,11 +4,9 @@ import com.donai.api.application.commitment.CancelCommitmentUseCase
 import com.donai.api.application.commitment.ConfirmCommitmentUseCase
 import com.donai.api.application.commitment.CreateCommitmentUseCase
 import com.donai.api.application.commitment.SubmitAptitudeUseCase
-import com.donai.api.application.flow.HandleRequestCreatedFlow
 import com.donai.api.application.matching.FindMatchingDonorsUseCase
 import com.donai.api.application.request.CancelRequestUseCase
 import com.donai.api.application.request.CreateRequestService
-import com.donai.api.application.request.CreateRequestUseCase
 import com.donai.api.application.request.GetRequestByIdUseCase
 import com.donai.api.application.request.GetAllRequestsUseCase
 import com.donai.api.application.request.GetFeedRequestsUseCase
@@ -75,7 +73,6 @@ fun Application.module() {
 
         requestRoutes(
             getAllRequestsUseCase,
-            getFeedRequestsUseCase,
             getRequestByIdUseCase,
             cancelRequestUseCase,
             createCommitmentUseCase,
@@ -92,7 +89,8 @@ fun Application.module() {
         userRoutes(
             createUserUseCase,
             getUserProfileUseCase,
-            updateDonationAvailabilityUseCase
+            updateDonationAvailabilityUseCase,
+            getFeedRequestsUseCase
         )
     }
 }

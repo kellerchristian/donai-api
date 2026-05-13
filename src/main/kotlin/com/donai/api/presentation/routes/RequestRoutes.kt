@@ -1,7 +1,6 @@
 package com.donai.api.presentation.routes
 
 import com.donai.api.application.commitment.CreateCommitmentUseCase
-import com.donai.api.application.flow.HandleRequestCreatedFlow
 import com.donai.api.application.request.CancelRequestUseCase
 import com.donai.api.application.request.CreateRequestService
 import io.ktor.server.routing.*
@@ -12,14 +11,12 @@ import com.donai.api.application.request.GetAllRequestsUseCase
 import com.donai.api.application.request.GetFeedRequestsUseCase
 import com.donai.api.presentation.dto.commitment.toResponse
 import com.donai.api.presentation.dto.request.CreateRequestRequest
-import com.donai.api.presentation.dto.request.toDetailResponse
 import com.donai.api.presentation.dto.request.toResponse
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 
 fun Route.requestRoutes(
     getAllRequestsUseCase: GetAllRequestsUseCase,
-    getFeedRequestsUseCase: GetFeedRequestsUseCase,
     getRequestByIdUseCase: GetRequestByIdUseCase,
     cancelRequestUseCase: CancelRequestUseCase,
     createCommitmentUseCase: CreateCommitmentUseCase,
@@ -46,19 +43,9 @@ fun Route.requestRoutes(
         }
 
         get {
-            val mode = call.request.queryParameters["mode"] ?: "feed"
-            val userId = "mock-user-123"
+            val result = getAllRequestsUseCase()
 
-            val result = when (mode) {
-
-                "all" -> getAllRequestsUseCase()
-
-                "feed" -> getFeedRequestsUseCase(userId)
-
-                else -> getAllRequestsUseCase()
-            }
-
-            call.respond(result.map { it.toDetailResponse() })
+            call.respond(result.map { it.toResponse() })
         }
 
         get("/{id}") {
@@ -77,7 +64,7 @@ fun Route.requestRoutes(
                 return@get
             }
 
-            call.respond(request.toDetailResponse())
+            call.respond(request.toResponse())
         }
 
         patch("/{id}/cancel") {

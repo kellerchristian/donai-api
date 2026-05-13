@@ -1,8 +1,10 @@
 package com.donai.api.presentation.routes
 
+import com.donai.api.application.request.GetFeedRequestsUseCase
 import com.donai.api.application.user.CreateUserUseCase
 import com.donai.api.application.user.GetUserProfileUseCase
 import com.donai.api.application.user.UpdateDonationAvailabilityUseCase
+import com.donai.api.presentation.dto.request.toResponse
 import com.donai.api.presentation.dto.user.CreateUserRequest
 import com.donai.api.presentation.dto.user.UpdateAvailabilityRequest
 import com.donai.api.presentation.dto.user.toResponse
@@ -10,6 +12,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
+import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.patch
@@ -18,7 +21,8 @@ import io.ktor.server.routing.post
 fun Route.userRoutes(
     createUserUseCase: CreateUserUseCase,
     getUserProfileUseCase: GetUserProfileUseCase,
-    updateDonationAvailabilityUseCase: UpdateDonationAvailabilityUseCase
+    updateDonationAvailabilityUseCase: UpdateDonationAvailabilityUseCase,
+    getFeedRequestsUseCase: GetFeedRequestsUseCase
 ) {
 
     post("/users") {
@@ -64,6 +68,21 @@ fun Route.userRoutes(
         call.respond(
             user.toResponse()
         )
+    }
+
+    get("/users/{id}/feed") {
+
+        val userId = call.parameters["id"]
+            ?: return@get call.respondText("Missing user id", status = HttpStatusCode.BadRequest)
+
+        val radius = call.request.queryParameters["radius"]?.toDoubleOrNull()
+
+        val result = getFeedRequestsUseCase(
+            userId = userId,
+            radiusMeters = radius
+        )
+
+        call.respond(result.map { it.toResponse() })
     }
 
     patch("/users/{id}/availability") {
