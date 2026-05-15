@@ -7,6 +7,7 @@ val appModule = module {
         requestModule,
         commitmentModule,
         matchingModule,
-        userModule
+        userModule,
+        eventModule
     )
 }

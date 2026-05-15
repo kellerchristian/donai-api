@@ -6,7 +6,7 @@ import com.donai.api.domain.shared.GeoLocation
 import com.donai.api.infrastructure.db.dbQuery
 import com.donai.api.infrastructure.db.mappers.toUser
 import com.donai.api.infrastructure.db.tables.UsersTable
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.select
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
@@ -22,7 +22,9 @@ class PostgresDonorRepository : DonorRepository {
         return dbQuery {
 
             UsersTable
-                .selectAll()
+                .select {
+                    UsersTable.deletedAt.isNull()
+                }
                 .mapNotNull { row ->
 
                     val user = row.toUser()

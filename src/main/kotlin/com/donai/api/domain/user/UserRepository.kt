@@ -13,5 +13,5 @@ interface UserRepository {
         availableToDonate: Boolean
     ): Boolean
 
-    fun findAllAvailableDonors(): List<User>
+    fun findAllEligibleDonors(): List<User>
 }

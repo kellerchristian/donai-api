@@ -1,5 +1,6 @@
 package com.donai.api.application.matching
 
+import com.donai.api.config.MatchingConfig
 import com.donai.api.domain.matching.DonorMatchingEngine
 import com.donai.api.domain.matching.DonorRepository
 import com.donai.api.domain.matching.MatchingDonor
@@ -10,14 +11,9 @@ class FindMatchingDonorsUseCase(
     private val donorRepository: DonorRepository,
     private val donorMatchingEngine: DonorMatchingEngine
 ) {
-
-    companion object {
-        private const val DEFAULT_RADIUS_METERS = 50000.0
-    }
-
     operator fun invoke(
         requestId: String,
-        radiusMeters: Double?
+        radiusMeters: Double? = null
     ): List<MatchingDonor> {
 
         val request = requestRepository.getById(requestId)
@@ -25,7 +21,7 @@ class FindMatchingDonorsUseCase(
 
         val effectiveRadius = radiusMeters
             ?.takeIf { it > 0 }
-            ?: DEFAULT_RADIUS_METERS
+            ?: MatchingConfig.DEFAULT_RADIUS_METERS
 
         val candidates = donorRepository.findCandidatesNear(
             location = request.location,

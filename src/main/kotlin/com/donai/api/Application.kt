@@ -30,6 +30,9 @@ import com.donai.api.presentation.routes.userRoutes
 import io.ktor.server.engine.*
 import kotlinx.serialization.modules.SerializersModule
 import java.time.Instant
+import com.donai.api.application.event.GetUserDonationHistoryUseCase
+import com.donai.api.application.event.RegisterDonationEventUseCase
+import com.donai.api.presentation.routes.eventRoutes
 
 fun main() {
     embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
@@ -70,6 +73,8 @@ fun Application.module() {
         val getUserProfileUseCase by inject<GetUserProfileUseCase>()
         val updateDonationAvailabilityUseCase by inject< UpdateDonationAvailabilityUseCase>()
         val createRequestService by inject<CreateRequestService>()
+        val registerDonationEventUseCase by inject<RegisterDonationEventUseCase>()
+        val getUserDonationHistoryUseCase by inject<GetUserDonationHistoryUseCase>()
 
         requestRoutes(
             getAllRequestsUseCase,
@@ -91,6 +96,10 @@ fun Application.module() {
             getUserProfileUseCase,
             updateDonationAvailabilityUseCase,
             getFeedRequestsUseCase
+        )
+        eventRoutes(
+            registerDonationEventUseCase,
+            getUserDonationHistoryUseCase
         )
     }
 }

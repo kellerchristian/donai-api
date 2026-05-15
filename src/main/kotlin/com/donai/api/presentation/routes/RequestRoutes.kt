@@ -8,7 +8,6 @@ import io.ktor.server.response.*
 import io.ktor.server.request.*
 import com.donai.api.application.request.GetRequestByIdUseCase
 import com.donai.api.application.request.GetAllRequestsUseCase
-import com.donai.api.application.request.GetFeedRequestsUseCase
 import com.donai.api.presentation.dto.commitment.toResponse
 import com.donai.api.presentation.dto.request.CreateRequestRequest
 import com.donai.api.presentation.dto.request.toResponse

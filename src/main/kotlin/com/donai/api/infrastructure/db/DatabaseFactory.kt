@@ -1,6 +1,7 @@
 package com.donai.api.infrastructure.db
 
 import com.donai.api.infrastructure.db.tables.DonationCommitmentsTable
+import com.donai.api.infrastructure.db.tables.DonationEventsTable
 import com.donai.api.infrastructure.db.tables.DonationRequestsTable
 import com.donai.api.infrastructure.db.tables.UsersTable
 import com.zaxxer.hikari.HikariConfig
@@ -29,7 +30,8 @@ object DatabaseFactory {
             SchemaUtils.create(
                 UsersTable,
                 DonationRequestsTable,
-                DonationCommitmentsTable
+                DonationCommitmentsTable,
+                DonationEventsTable
             )
         }
     }

@@ -85,14 +85,16 @@ class PostgresUserRepository : UserRepository {
         updatedRows > 0
     }
 
-    override fun findAllAvailableDonors(): List<User> = dbQuery {
+    override fun findAllEligibleDonors(): List<User> = dbQuery {
 
         UsersTable
             .select {
                 (UsersTable.availableToDonate eq true) and
                         UsersTable.deletedAt.isNull() and
-                        (UsersTable.nextEligibleAt.isNull() or
-                                (UsersTable.nextEligibleAt lessEq Instant.now()))
+                        (
+                                UsersTable.nextEligibleAt.isNull() or
+                                        (UsersTable.nextEligibleAt lessEq Instant.now())
+                                )
             }
             .map { it.toUser() }
     }

@@ -4,7 +4,7 @@ import com.donai.api.domain.request.DonationRequest
 
 class DonorMatchingEngine(
     private val bloodCompatibilityPolicy: BloodCompatibilityPolicy,
-    private val donorAvailabilityPolicy: DonorAvailabilityPolicy
+    private val donorEligibilityPolicy: DonorEligibilityPolicy
 ) {
 
     fun match(
@@ -14,7 +14,7 @@ class DonorMatchingEngine(
 
         return candidates
             .filter {
-                donorAvailabilityPolicy.isAvailable(it.user)
+                donorEligibilityPolicy.isEligible(it.user)
             }
             .filter {
                 bloodCompatibilityPolicy.isCompatible(
