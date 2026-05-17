@@ -1,7 +1,7 @@
 package com.donai.api
 
 import com.donai.api.application.commitment.CancelCommitmentUseCase
-import com.donai.api.application.commitment.ConfirmCommitmentUseCase
+import com.donai.api.application.commitment.ConfirmCommitmentService
 import com.donai.api.application.commitment.CreateCommitmentUseCase
 import com.donai.api.application.commitment.SubmitAptitudeUseCase
 import com.donai.api.application.matching.FindMatchingDonorsUseCase
@@ -65,7 +65,7 @@ fun Application.module() {
         val getRequestByIdUseCase by inject<GetRequestByIdUseCase>()
         val cancelRequestUseCase by inject<CancelRequestUseCase>()
         val createCommitmentUseCase by inject<CreateCommitmentUseCase>()
-        val confirmCommitmentUseCase by inject<ConfirmCommitmentUseCase>()
+        val confirmCommitmentService by inject<ConfirmCommitmentService>()
         val submitAptitudeUseCase by inject<SubmitAptitudeUseCase>()
         val cancelCommitmentUseCase by inject<CancelCommitmentUseCase>()
         val findMatchingDonorsUseCase by inject<FindMatchingDonorsUseCase>()
@@ -84,7 +84,7 @@ fun Application.module() {
             createRequestService
         )
         commitmentRoutes(
-            confirmCommitmentUseCase,
+            confirmCommitmentService,
             submitAptitudeUseCase,
             cancelCommitmentUseCase
         )
@@ -95,11 +95,11 @@ fun Application.module() {
             createUserUseCase,
             getUserProfileUseCase,
             updateDonationAvailabilityUseCase,
-            getFeedRequestsUseCase
+            getFeedRequestsUseCase,
+            getUserDonationHistoryUseCase
         )
         eventRoutes(
-            registerDonationEventUseCase,
-            getUserDonationHistoryUseCase
+            registerDonationEventUseCase
         )
     }
 }

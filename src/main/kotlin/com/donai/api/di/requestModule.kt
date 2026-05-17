@@ -1,31 +1,48 @@
 package com.donai.api.di
 
 import com.donai.api.application.request.CancelRequestUseCase
+import com.donai.api.application.request.CloseRequestIfCompletedUseCase
 import com.donai.api.application.request.CreateRequestService
 import com.donai.api.application.request.CreateRequestUseCase
 import com.donai.api.application.request.GetRequestByIdUseCase
 import com.donai.api.application.request.GetAllRequestsUseCase
 import com.donai.api.application.request.GetFeedRequestsUseCase
-import com.donai.api.domain.matching.BloodCompatibilityPolicy
 import com.donai.api.domain.request.RequestRepository
-import com.donai.api.domain.user.UserRepository
 import com.donai.api.infrastructure.db.repositories.request.PostgresRequestRepository
-import com.donai.api.infrastructure.db.repositories.user.PostgresUserRepository
 import org.koin.dsl.module
 
 val requestModule = module {
 
-    single<RequestRepository> { PostgresRequestRepository() }
+    single<RequestRepository> {
+        PostgresRequestRepository()
+    }
 
-    single<UserRepository> { PostgresUserRepository() }
+    single {
+        CreateRequestUseCase(get())
+    }
 
-    single<BloodCompatibilityPolicy> { BloodCompatibilityPolicy() }
+    single {
+        GetAllRequestsUseCase(get())
+    }
 
-    factory { CreateRequestUseCase(get()) }
-    factory { GetAllRequestsUseCase(get()) }
-    factory { GetFeedRequestsUseCase(get(), get(), get()) }
-    factory { GetRequestByIdUseCase(get()) }
-    factory { CancelRequestUseCase(get()) }
+    single {
+        GetFeedRequestsUseCase(get(), get(), get())
+    }
+
+    single {
+        GetRequestByIdUseCase(get())
+    }
+
+    single {
+        CancelRequestUseCase(get())
+    }
+
+    single {
+        CloseRequestIfCompletedUseCase(
+            requestRepository = get(),
+            commitmentRepository = get()
+        )
+    }
 
     single {
         CreateRequestService(

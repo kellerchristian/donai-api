@@ -15,13 +15,15 @@ class RegisterDonationEventUseCase(
         commitmentId: String
     ): DonationEvent {
 
+        val donatedAt = Instant.now()
+
         val event = DonationEvent(
             id = UUID.randomUUID().toString(),
             donorId = donorId,
             requestId = requestId,
             commitmentId = commitmentId,
-            donatedAt = Instant.now(),
-            createdAt = Instant.now()
+            donatedAt = donatedAt,
+            createdAt = donatedAt
         )
 
         repository.save(event)

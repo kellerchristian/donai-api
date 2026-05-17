@@ -1,7 +1,7 @@
 package com.donai.api.presentation.routes
 
 import com.donai.api.application.commitment.CancelCommitmentUseCase
-import com.donai.api.application.commitment.ConfirmCommitmentUseCase
+import com.donai.api.application.commitment.ConfirmCommitmentService
 import com.donai.api.application.commitment.SubmitAptitudeUseCase
 import com.donai.api.presentation.dto.commitment.AptitudeResultResponse
 import com.donai.api.presentation.dto.commitment.SubmitAptitudeRequest
@@ -14,7 +14,7 @@ import io.ktor.server.routing.patch
 import io.ktor.server.routing.route
 
 fun Route.commitmentRoutes(
-    confirmCommitmentUseCase: ConfirmCommitmentUseCase,
+    confirmCommitmentService: ConfirmCommitmentService,
     submitAptitudeUseCase: SubmitAptitudeUseCase,
     cancelCommitmentUseCase: CancelCommitmentUseCase
 ) {
@@ -27,7 +27,7 @@ fun Route.commitmentRoutes(
                 ?: return@patch call.respond(HttpStatusCode.BadRequest)
 
             try {
-                confirmCommitmentUseCase.execute(id)
+                confirmCommitmentService(id)
                 call.respond(HttpStatusCode.NoContent)
 
             } catch (e: IllegalArgumentException) {

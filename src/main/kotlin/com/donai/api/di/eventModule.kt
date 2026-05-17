@@ -12,11 +12,7 @@ val eventModule = module {
         PostgresDonationEventRepository()
     }
 
-    factory {
+    single {
         RegisterDonationEventUseCase(get())
-    }
-
-    factory {
-        GetUserDonationHistoryUseCase(get())
     }
 }

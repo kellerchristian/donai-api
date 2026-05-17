@@ -1,32 +1,60 @@
 package com.donai.api.di
 
 import com.donai.api.application.commitment.CancelCommitmentUseCase
+import com.donai.api.application.commitment.ConfirmCommitmentService
 import com.donai.api.application.commitment.ConfirmCommitmentUseCase
 import com.donai.api.application.commitment.CreateCommitmentUseCase
 import com.donai.api.application.commitment.SubmitAptitudeUseCase
-import org.koin.dsl.module
+import com.donai.api.application.flow.OnCommitmentConfirmedFlow
 import com.donai.api.domain.commitment.CommitmentRepository
-import com.donai.api.infrastructure.db.repositories.commitment.PostgresCommitmentRepository
 import com.donai.api.infrastructure.db.mappers.CommitmentMapper
+import com.donai.api.infrastructure.db.repositories.commitment.PostgresCommitmentRepository
+import org.koin.dsl.module
 
 val commitmentModule = module {
 
-    single { CommitmentMapper() }
+    single {
+        CommitmentMapper()
+    }
 
     single<CommitmentRepository> {
         PostgresCommitmentRepository(get())
     }
 
-    factory {
-        CreateCommitmentUseCase(get(), get())
+    single {
+        CreateCommitmentUseCase(
+            requestRepository = get(),
+            commitmentRepository = get()
+        )
     }
-    factory {
-        ConfirmCommitmentUseCase(get(), get())
+
+    single {
+        ConfirmCommitmentUseCase(
+            commitmentRepository = get()
+        )
     }
-    factory {
+
+    single {
+        OnCommitmentConfirmedFlow(
+            commitmentRepository = get(),
+            registerDonationEventUseCase = get(),
+            recalculateUserEligibilityUseCase = get(),
+            closeRequestIfCompletedUseCase = get()
+        )
+    }
+
+    single {
+        ConfirmCommitmentService(
+            confirmCommitmentUseCase = get(),
+            onCommitmentConfirmedFlow = get()
+        )
+    }
+
+    single {
         SubmitAptitudeUseCase(get())
     }
-    factory {
+
+    single {
         CancelCommitmentUseCase(get())
     }
 }

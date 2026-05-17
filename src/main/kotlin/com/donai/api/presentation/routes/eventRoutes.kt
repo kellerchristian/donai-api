@@ -13,8 +13,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 
 fun Route.eventRoutes(
-    registerDonationEventUseCase: RegisterDonationEventUseCase,
-    getUserDonationHistoryUseCase: GetUserDonationHistoryUseCase
+    registerDonationEventUseCase: RegisterDonationEventUseCase
 ) {
 
     route("/events") {
@@ -31,23 +30,6 @@ fun Route.eventRoutes(
             )
 
             call.respond(result.toResponse())
-        }
-    }
-
-    route("/users") {
-
-        get("/{id}/events") {
-
-            val userId =
-                call.parameters["id"]
-                    ?: error("Missing user id")
-
-            val result =
-                getUserDonationHistoryUseCase(userId)
-
-            call.respond(
-                result.map { it.toResponse() }
-            )
         }
     }
 }

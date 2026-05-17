@@ -85,6 +85,27 @@ class PostgresUserRepository : UserRepository {
         updatedRows > 0
     }
 
+    override fun updateDonationStatus(
+        userId: String,
+        lastDonationAt: Instant,
+        nextEligibleAt: Instant,
+        availableToDonate: Boolean
+    ): Boolean = dbQuery {
+
+        val updatedRows = UsersTable.update({
+            (UsersTable.id eq userId) and
+                    UsersTable.deletedAt.isNull()
+        }) {
+
+            it[this.lastDonationAt] = lastDonationAt
+            it[this.nextEligibleAt] = nextEligibleAt
+            it[this.availableToDonate] = availableToDonate
+            it[this.updatedAt] = Instant.now()
+        }
+
+        updatedRows > 0
+    }
+
     override fun findAllEligibleDonors(): List<User> = dbQuery {
 
         UsersTable

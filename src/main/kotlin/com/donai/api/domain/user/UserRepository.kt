@@ -1,5 +1,7 @@
 package com.donai.api.domain.user
 
+import java.time.Instant
+
 interface UserRepository {
 
     fun create(user: User): User
@@ -10,6 +12,13 @@ interface UserRepository {
 
     fun updateAvailability(
         userId: String,
+        availableToDonate: Boolean
+    ): Boolean
+
+    fun updateDonationStatus(
+        userId: String,
+        lastDonationAt: Instant,
+        nextEligibleAt: Instant,
         availableToDonate: Boolean
     ): Boolean
 

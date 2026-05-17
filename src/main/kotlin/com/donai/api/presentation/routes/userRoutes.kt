@@ -1,9 +1,11 @@
 package com.donai.api.presentation.routes
 
+import com.donai.api.application.event.GetUserDonationHistoryUseCase
 import com.donai.api.application.request.GetFeedRequestsUseCase
 import com.donai.api.application.user.CreateUserUseCase
 import com.donai.api.application.user.GetUserProfileUseCase
 import com.donai.api.application.user.UpdateDonationAvailabilityUseCase
+import com.donai.api.presentation.dto.event.toResponse
 import com.donai.api.presentation.dto.request.toResponse
 import com.donai.api.presentation.dto.user.CreateUserRequest
 import com.donai.api.presentation.dto.user.UpdateAvailabilityRequest
@@ -17,96 +19,121 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.patch
 import io.ktor.server.routing.post
+import io.ktor.server.routing.route
 
 fun Route.userRoutes(
     createUserUseCase: CreateUserUseCase,
     getUserProfileUseCase: GetUserProfileUseCase,
     updateDonationAvailabilityUseCase: UpdateDonationAvailabilityUseCase,
-    getFeedRequestsUseCase: GetFeedRequestsUseCase
+    getFeedRequestsUseCase: GetFeedRequestsUseCase,
+    getUserDonationHistoryUseCase: GetUserDonationHistoryUseCase
 ) {
 
-    post("/users") {
+    route("/users") {
 
-        val request = call.receive<CreateUserRequest>()
+        post {
 
-        val user = createUserUseCase(
-            firebaseUid = request.firebaseUid,
+            val request = call.receive<CreateUserRequest>()
 
-            name = request.name,
+            val user = createUserUseCase(
+                firebaseUid = request.firebaseUid,
 
-            email = request.email,
+                name = request.name,
 
-            bloodGroup = request.bloodGroup,
+                email = request.email,
 
-            rhFactor = request.rhFactor,
+                bloodGroup = request.bloodGroup,
 
-            latitude = request.latitude,
+                rhFactor = request.rhFactor,
 
-            longitude = request.longitude,
+                latitude = request.latitude,
 
-            locationDisplay = request.locationDisplay,
+                longitude = request.longitude,
 
-            gdprAccepted = request.gdprAccepted
-        )
+                locationDisplay = request.locationDisplay,
 
-        call.respond(
-            HttpStatusCode.Created,
-            user.toResponse()
-        )
-    }
-
-    get("/users/{id}") {
-
-        val userId = call.parameters["id"]
-            ?: return@get call.respond(
-                HttpStatusCode.BadRequest,
-                "Missing user id"
+                gdprAccepted = request.gdprAccepted
             )
 
-        val user = getUserProfileUseCase(userId)
-
-        call.respond(
-            user.toResponse()
-        )
-    }
-
-    get("/users/{id}/feed") {
-
-        val userId = call.parameters["id"]
-            ?: return@get call.respondText("Missing user id", status = HttpStatusCode.BadRequest)
-
-        val radius = call.request.queryParameters["radius"]?.toDoubleOrNull()
-
-        val result = getFeedRequestsUseCase(
-            userId = userId,
-            radiusMeters = radius
-        )
-
-        call.respond(result.map { it.toResponse() })
-    }
-
-    patch("/users/{id}/availability") {
-
-        val userId = call.parameters["id"]
-            ?: return@patch call.respond(
-                HttpStatusCode.BadRequest,
-                "Missing user id"
+            call.respond(
+                HttpStatusCode.Created,
+                user.toResponse()
             )
+        }
 
-        val request = call.receive<UpdateAvailabilityRequest>()
+        get("/{id}") {
 
-        try {
-            updateDonationAvailabilityUseCase(
+            val userId = call.parameters["id"]
+                ?: return@get call.respond(
+                    HttpStatusCode.BadRequest,
+                    "Missing user id"
+                )
+
+            val user = getUserProfileUseCase(userId)
+
+            call.respond(
+                user.toResponse()
+            )
+        }
+
+        get("/{id}/feed") {
+
+            val userId = call.parameters["id"]
+                ?: return@get call.respondText("Missing user id", status = HttpStatusCode.BadRequest)
+
+            val radius = call.request.queryParameters["radius"]?.toDoubleOrNull()
+
+            val result = getFeedRequestsUseCase(
                 userId = userId,
-                availableToDonate = request.availableToDonate
+                radiusMeters = radius
             )
-        }
-        catch (e: IllegalArgumentException) {
-            call.respond(HttpStatusCode.NotFound, e.message ?: "Not found")
+
+            call.respond(result.map { it.toResponse() })
         }
 
-        call.respond(
-            HttpStatusCode.OK
-        )
+        patch("/{id}/availability") {
+
+            val userId = call.parameters["id"]
+                ?: return@patch call.respond(
+                    HttpStatusCode.BadRequest,
+                    "Missing user id"
+                )
+
+            val request = call.receive<UpdateAvailabilityRequest>()
+
+            try {
+
+                updateDonationAvailabilityUseCase(
+                    userId = userId,
+                    availableToDonate = request.availableToDonate
+                )
+
+                call.respond(HttpStatusCode.OK)
+
+            } catch (e: IllegalArgumentException) {
+
+                call.respond(
+                    HttpStatusCode.NotFound,
+                    e.message ?: "Not found"
+                )
+            }
+        }
+
+        get("/{id}/events") {
+
+            val userId =
+                call.parameters["id"]
+                    ?: return@get call.respond(
+                        HttpStatusCode.BadRequest,
+                        "Missing user id"
+                    )
+
+            val result =
+                getUserDonationHistoryUseCase(userId)
+
+            call.respond(
+                result.map { it.toResponse() }
+            )
+        }
     }
 }
